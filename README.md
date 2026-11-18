@@ -2,7 +2,7 @@
 
 A data-analytics capstone project: a Power BI dashboard that monitors a portfolio of 1,836 infrastructure projects through their approval pipeline (DPR, administrative sanction, technical sanction, tender, award, execution, completion), tracking progress, expenditure, billing and risk in one report.
 
-Based on a real government project monitoring dashboard; the data in this repository has been manipulated and uses demo figures for portfolio purposes - no real project figures, names or identifying details are included. The source workbook and the .pbix file are not included in this repository.
+Based on a real government project monitoring dashboard; the data in this repository has been manipulated and uses demo figures for portfolio purposes. The source workbook and the .pbix file are not included in this repository.
 
 ## Data model
 

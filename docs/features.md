@@ -34,4 +34,8 @@ Everything listed here is implemented in the final report file (verified from th
 
 ## Provenance
 
-Based on a real government project monitoring dashboard. The data in the published file and screenshots has been manipulated and uses demo figures for portfolio purposes - no real project figures, names or identifying details are included. The .pbix and source workbook are not part of this repository.
+Based on a real government project monitoring dashboard. The data in the published file and screenshots has been manipulated and uses demo figures for portfolio purposes. The .pbix and source workbook are not part of this repository.
+
+## Known limitation
+
+The Awarded Amount vs Expenditure chart's value axis is fixed at 0-400 in the report file, so in the screenshots the highest district's awarded peak (about 406 Cr in the demo data) clips at the top edge of the chart. This is the report's own axis setting, preserved as built - not a capture issue.
