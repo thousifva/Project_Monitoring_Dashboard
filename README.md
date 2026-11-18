@@ -2,7 +2,7 @@
 
 A data-analytics capstone project: a Power BI dashboard that monitors a portfolio of 1,836 infrastructure projects through their approval pipeline (DPR, administrative sanction, technical sanction, tender, award, execution, completion), tracking progress, expenditure, billing and risk in one report.
 
-Built from the programme's functional requirements brief. The source workbook and the .pbix file are not included in this repository.
+Based on a real government project monitoring dashboard; the data in this repository has been manipulated and uses demo figures for portfolio purposes - no real project figures, names or identifying details are included. The source workbook and the .pbix file are not included in this repository.
 
 ## Data model
 
@@ -31,9 +31,19 @@ Custom theme applied report-wide.
 
 ![Requirements wireframe](docs/wireframe-requirements.png)
 
-*The original requirements wireframe from the programme brief - the design mockup the dashboard was planned from, not a screenshot of the finished report. Final report screenshots will be added here.*
+*The original requirements wireframe from the brief - the design mockup the dashboard was planned from.*
 
-Full background in [docs/requirements.md](docs/requirements.md) (what the brief required) and [docs/method.md](docs/method.md) (how it was built, including the consolidation from a 4-page draft design into the final 2-page report).
+The finished report (captured from the published file, data manipulated with demo figures):
+
+**Overview page** - HTML-styled KPI cards, milestone funnel, risk donuts and the bookmark-driven slicer panel:
+
+![Overview page](docs/overview.png)
+
+**Analysis page** - budget allocation, pendency, the 3-way progress toggle and the district-level awarded-vs-expenditure chart:
+
+![Analysis page](docs/analysis.png)
+
+Full background in [docs/requirements.md](docs/requirements.md) (what the brief required), [docs/method.md](docs/method.md) (how it was built, including the consolidation from a 4-page draft design into the final 2-page report) and [docs/features.md](docs/features.md) (every implemented feature: pages, visuals, slicers, bookmarks, measures).
 
 ## What the dashboard surfaces (training dataset)
 
@@ -51,7 +61,9 @@ Full background in [docs/requirements.md](docs/requirements.md) (what the brief 
 | `dax/measures.dax` | The 30 measures from the final file: funnel, KPI, billing and risk logic, plus the styled HTML behind the KPI cards |
 | `docs/requirements.md` | Faithful summary of the programme's functional requirements brief |
 | `docs/method.md` | How the dashboard was built: model, columns, measures, design and verification |
+| `docs/features.md` | Implemented features: pages, visuals, slicers, bookmarks, measures |
 | `docs/wireframe-requirements.png` | The original requirements wireframe (design mockup, not the finished dashboard) |
+| `docs/overview.png`, `docs/analysis.png` | Screenshots of the finished report's two pages |
 | `.gitignore` | Keeps the workbook and .pbix out of commits |
 
 ## Techniques worth noting
