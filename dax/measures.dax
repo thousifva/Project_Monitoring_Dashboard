@@ -1,0 +1,144 @@
+-- Measures (30), kept in a disconnected 'Measures Table', extracted
+-- verbatim from the author's final .pbix (September 2026). Includes the
+-- 7-stage funnel, KPI logic and the HTML used by the KPI-card visuals.
+
+Total Projects =
+COUNTROWS('Project Details')
+
+Awarded Amount (Cr) =
+DIVIDE(SUM('Project details'[Awarded Amount]), 10000000, 0)
+
+Bill Amount (Cr) =
+DIVIDE(
+    SUMX('Bill Expenditure', VALUE('Bill Expenditure'[Net Amount Payable])),
+    10000000,
+    0
+)
+
+DPR Approved =
+CALCULATE(COUNTROWS('Project details'), NOT ISBLANK('Project details'[DPR Date]))
+
+AS Issued =
+CALCULATE(COUNTROWS('Project details'), 
+    NOT ISBLANK('Project details'[DPR Date]), NOT ISBLANK('Project details'[AS Date]))
+
+TS Issued =
+CALCULATE(DISTINCTCOUNT('Package details'[Project Code2]), 
+    NOT ISBLANK('Package details'[Related AS Date]), NOT ISBLANK('Package details'[TS Date]))
+
+NIT Issued =
+CALCULATE(DISTINCTCOUNT('Package details'[Package Code]), 
+    NOT ISBLANK('Package details'[Related AS Date]), NOT ISBLANK('Package details'[TS Date]), 
+    NOT ISBLANK('Package details'[NIT Issued Date]))
+
+Awarded =
+CALCULATE(DISTINCTCOUNT('Package Details'[Project Code2]), 
+    NOT ISBLANK('Package Details'[Related AS Date]), NOT ISBLANK('Package Details'[TS Date]), 
+    NOT ISBLANK('Package Details'[NIT Issued Date]), NOT ISBLANK('Package Details'[Selection Notice Issued Date]), 
+    NOT ISBLANK('Package Details'[Agreement Date]))
+
+Started =
+CALCULATE(COUNTROWS('Project details'), 
+    NOT ISBLANK('Project details'[DPR Date]), NOT ISBLANK('Project details'[AS Date]), 
+    NOT ISBLANK('Project details'[Implementation Starting Date]))
+
+Completed =
+CALCULATE(DISTINCTCOUNT('Project details'[Project Code]), 'Project details'[Project Status] = "Completed")
+
+Completed Projects =
+CALCULATE(DISTINCTCOUNT('Project details'[Project Code]), 'Project details'[Project Status]="PHYSICALLY COMPLETED")
+
+Remaining Projects % =
+[Remaining Projects]/[Total Projects]
+
+Remaining Projects =
+[Total Projects]-[Completed Projects]
+
+Expenditure (Cr) =
+DIVIDE(SUM('Package Details'[Expenditure]), 10000000, 0)
+
+Balance =
+[Awarded Amount (Cr)]-[Expenditure (Cr)]
+
+Remaining Awarded % =
+[Balance]/[Awarded Amount (Cr)]
+
+Pending Bill =
+[Bill Amount (Cr)]-[Expenditure (Cr)]
+
+Remaining Bill % =
+[Pending Bill]/[Bill Amount (Cr)]
+
+Total Risk =
+(COUNTROWS('Risk Details'))
+
+Risk Resolved =
+CALCULATE(COUNTROWS('Risk Details'),'Risk Details'[Risk Status]="Solved")
+
+Risk Analysis =
+DISTINCTCOUNT('Risk details'[Project Code])
+
+Completed Remaining (Project) =
+"Completed: " & [Completed Projects] & " | Remaining: " & [Remaining Projects]
+
+Remaining % (Project) =
+"Remaining % : " & FORMAT([Remaining Projects %], "0.00%")
+
+Expenditure Balance (Awarded) =
+"Expenditure: " & FORMAT([Expenditure (Cr)],"0.00") & " | Balance: " & FORMAT([Balance],"0.00")
+
+Remaining % (Awarded) =
+"Remaining % : " & FORMAT([Remaining Awarded %], "0.00%")
+
+Approved Pending (Bill) =
+"Approved: " & FORMAT([Expenditure (Cr)],"0.00") & " | Pending: " & FORMAT([Pending Bill],"0.00")
+
+Remaining % (Bill) =
+"Remaining % : " & FORMAT([Remaining Bill %], "0.00%")
+
+Card_TotalProjects_HTML =
+"<div style='font-family:Segoe UI, sans-serif; width:100%; height:100%; box-sizing:border-box; padding:16px; border-radius:12px; border:1px solid #E5E5E5;'>" &
+  "<div style='font-size:13px; color:#6B7280; margin-bottom:6px;'>Total Projects</div>" &
+  "<div style='display:flex; align-items:baseline; gap:8px; flex-wrap:nowrap;'>" &
+    "<span style='font-size:24px; font-weight:600; color:#111827; white-space:nowrap;'>" & FORMAT([Total Projects], "#,0") & "</span>" &
+    "<span style='font-size:11px; font-weight:600; padding:2px 8px; border-radius:12px; background:#DCFCE7; color:#166534; white-space:nowrap;'>" & FORMAT([Completed Projects], "0") & " completed" & "</span>" &
+  "</div>" &
+  "<div style='height:1px; background:#E5E5E5; margin:10px 0;'></div>" &
+  "<div style='font-size:12px; color:#6B7280;'>" &
+    "<span>Remaining : </span>" &
+    "<span style='color:#111827; font-weight:600;'>" & FORMAT([Remaining Projects], "#,0") & "  (" & FORMAT([Remaining % (Project)], "0.00%") & " )" & "</span>" &
+  "</div>" &
+"</div>"
+
+Card_Awarded_HTML =
+"<div style='font-family:Segoe UI, sans-serif; width:100%; height:100%; box-sizing:border-box; padding:16px; border-radius:12px; border:1px solid #E5E5E5;'>" &
+  "<div style='font-size:13px; color:#6B7280; margin-bottom:6px;'>Awarded Amount</div>" &
+  "<div style='display:flex; align-items:baseline; gap:8px; flex-wrap:nowrap;'>" &
+    "<span style='font-size:24px; font-weight:600; color:#111827; white-space:nowrap;'>" & FORMAT([Awarded Amount (Cr)], "#,0.00") & " Cr</span>" &
+    "<span style='font-size:11px; font-weight:600; padding:2px 8px; border-radius:12px; background:#DBEAFE; color:#1E40AF; white-space:nowrap;'>" & FORMAT([Remaining % (Awarded)], "0.00%") & "</span>" &
+  "</div>" &
+  "<div style='height:1px; background:#E5E5E5; margin:10px 0;'></div>" &
+  "<div style='display:flex; justify-content:space-between; font-size:12px; color:#6B7280; margin-bottom:4px;'>" &
+    "<span>Expenditure</span><span style='color:#111827; font-weight:600;'>" & FORMAT([Expenditure (Cr)], "#,0.00") & " Cr</span>" &
+  "</div>" &
+  "<div style='display:flex; justify-content:space-between; font-size:12px; color:#6B7280;'>" &
+    "<span>Balance</span><span style='color:#111827; font-weight:600;'>" & FORMAT([Balance], "#,0.00") & " Cr</span>" &
+  "</div>" &
+"</div>"
+
+Card_Bill_HTML =
+"<div style='font-family:Segoe UI, sans-serif; width:100%; height:100%; box-sizing:border-box; padding:16px; border-radius:12px; border:1px solid #E5E5E5;'>" &
+  "<div style='font-size:13px; color:#6B7280; margin-bottom:6px;'>Bill Amount</div>" &
+  "<div style='display:flex; align-items:baseline; gap:8px; flex-wrap:nowrap;'>" &
+    "<span style='font-size:24px; font-weight:600; color:#111827; white-space:nowrap;'>" & FORMAT([Bill Amount (Cr)], "#,0.00") & " Cr</span>" &
+    "<span style='font-size:11px; font-weight:600; padding:2px 8px; border-radius:12px; background:#FEF3C7; color:#92400E; white-space:nowrap;'>" & FORMAT([Remaining % (Bill)], "0.00%") & "</span>" &
+  "</div>" &
+  "<div style='height:1px; background:#E5E5E5; margin:10px 0;'></div>" &
+  "<div style='display:flex; justify-content:space-between; font-size:12px; color:#6B7280; margin-bottom:4px;'>" &
+    "<span>Approved</span><span style='color:#111827; font-weight:600;'>" & FORMAT([Expenditure (Cr)], "#,0.00") & " Cr</span>" &
+  "</div>" &
+  "<div style='display:flex; justify-content:space-between; font-size:12px; color:#6B7280;'>" &
+    "<span>Pending</span><span style='color:#111827; font-weight:600;'>" & FORMAT([Pending Bill], "#,0.00") & " Cr</span>" &
+  "</div>" &
+"</div>"
+

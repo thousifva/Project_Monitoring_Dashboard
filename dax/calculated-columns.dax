@@ -1,0 +1,121 @@
+-- Calculated columns on 'Project Details', extracted verbatim from the
+-- author's final .pbix (September 2026). 13 columns: banded categories,
+-- their numeric sort keys, progress ratios, pending status and milestone.
+
+AS Amount Category =
+SWITCH(
+    TRUE(),
+    'Project details'[AS Amount] < 10000000,  "<1 Cr",
+    'Project details'[AS Amount] < 50000000,  "1-5 Cr",
+    'Project details'[AS Amount] < 100000000, "5-10 Cr",
+    'Project details'[AS Amount] < 250000000, "10-25 Cr",
+    'Project details'[AS Amount] < 500000000, "25-50 Cr",
+    ">50 Cr"
+)
+
+AS Amount Category Sort =
+SWITCH(
+    TRUE(),
+    'Project details'[AS Amount] < 10000000,  1,
+    'Project details'[AS Amount] < 50000000,  2,
+    'Project details'[AS Amount] < 100000000, 3,
+    'Project details'[AS Amount] < 250000000, 4,
+    'Project details'[AS Amount] < 500000000, 5,
+    6
+)
+
+Financial Progress =
+DIVIDE('Project details'[Total Project Expenditure], 'Project details'[Awarded Amount])
+
+Physical Progress =
+'Project details'[Project Progress %]/100
+
+Progress Difference =
+ABS('Project details'[Physical Progress] - 'Project details'[Financial Progress])
+
+Financial Progress Category =
+SWITCH(
+    TRUE(),
+    'Project details'[Financial Progress] < 0.25, "<25%",
+    'Project details'[Financial Progress] < 0.5,  "25%–50%",
+    'Project details'[Financial Progress] < 0.75, "50%–75%",
+    ">=75%"
+)
+
+Progress Difference Category =
+SWITCH(
+    TRUE(),
+    'Project details'[Progress Difference] < 0.05, "<5%",
+    'Project details'[Progress Difference] < 0.25, "5%–25%",
+    'Project details'[Progress Difference] < 0.5,  "25%–50%",
+    'Project details'[Progress Difference] < 0.75, "50%–75%",
+    ">=75%"
+)
+
+Financial Progress Category Sort =
+SWITCH(
+    TRUE(),
+    'Project details'[Financial Progress] < 0.25, 1,
+    'Project details'[Financial Progress] < 0.5,  2,
+    'Project details'[Financial Progress] < 0.75, 3,
+    4
+)
+
+Progress Difference Category Sort =
+SWITCH(
+    TRUE(),
+    'Project details'[Progress Difference] < 0.05, 1,
+    'Project details'[Progress Difference] < 0.25, 2,
+    'Project details'[Progress Difference] < 0.5,  3,
+    'Project details'[Progress Difference] < 0.75, 4,
+    5
+)
+
+Physical Progress Category =
+SWITCH(
+    TRUE(),
+    'Project Details'[Physical Progress] < 0.25, "<25%",
+    'Project Details'[Physical Progress] < 0.5,  "25%–50%",
+    'Project Details'[Physical Progress] < 0.75, "50%–75%",
+    ">=75%"
+)
+
+Physical Progress Category Sort =
+SWITCH(
+    TRUE(),
+    'Project details'[Physical Progress] < 0.25, 1,
+    'Project details'[Physical Progress] < 0.5,  2,
+    'Project details'[Physical Progress] < 0.75, 3,
+    4
+)
+
+Project Pending Status =
+SWITCH(
+    TRUE(),
+    ISBLANK('Project Details'[DPR Date]), "DPR Pending",
+    ISBLANK('Project Details'[AS Date]), "AS Pending",
+    ISBLANK('Project Details'[Implementation Starting Date]), "Not Started",
+    ISBLANK('Project Details'[Completion Date]), "Not Completed",
+    "Completed"
+)
+
+Project Milestone =
+SWITCH(
+    TRUE(),
+    ISBLANK('Project details'[DPR Date]) && ISBLANK('Project details'[AS Date]) 
+        && ISBLANK('Project details'[Implementation Starting Date]) && ISBLANK('Project details'[Completion Date]),
+        "Pre DPR",
+    NOT ISBLANK('Project details'[DPR Date]) && ISBLANK('Project details'[AS Date]),
+        "DPR Issued",
+    NOT ISBLANK('Project details'[DPR Date]) && NOT ISBLANK('Project details'[AS Date]) 
+        && ISBLANK('Project details'[Implementation Starting Date]),
+        "AS Issued",
+    NOT ISBLANK('Project details'[DPR Date]) && NOT ISBLANK('Project details'[AS Date]) 
+        && NOT ISBLANK('Project details'[Implementation Starting Date]) && ISBLANK('Project details'[Completion Date]),
+        "Started",
+    NOT ISBLANK('Project details'[DPR Date]) && NOT ISBLANK('Project details'[AS Date]) 
+        && NOT ISBLANK('Project details'[Implementation Starting Date]) && NOT ISBLANK('Project details'[Completion Date]),
+        "Completed",
+    "WIP"
+)
+

@@ -1,0 +1,6 @@
+# The training dataset and report file are not part of this repository.
+*.xlsx
+*.xls
+*.csv
+*.pbix
+data/
