@@ -17,14 +17,14 @@ The programme brief arrived with a requirements wireframe for a 4-page report. A
 *Explanatory diagram of the as-built model.*
 
 - **Why Project Details is the hub:** every question the brief asks is about projects, and one row per project (1,836 rows) is the natural centre. Packages, bills and risks are things that happen *to* a project, so they hang off it through many-to-one, single-direction relationships.
-- **Why single-direction filters:** filters flow from the one side to the many side only, so slicing by a project attribute (district, status, tranche) correctly reduces packages, bills and risks - and unrelated tables can never filter each other in surprising ways.
+- **Why single-direction filters:** filters flow from the one side to the many side only, so slicing by a project attribute (district, implementation agency, project status) correctly reduces packages, bills and risks - and unrelated tables can never filter each other in surprising ways.
 - **Why the Measures Table is disconnected:** it has no data and no relationships; it exists only to keep all 30 measures in one visible folder in the field list, a common housekeeping pattern.
 - **Why a field parameter for the progress toggle:** the Financial / Physical / Progress difference switch swaps the measure an entire chart shows. A field parameter does that natively - one slicer, no bookmarks or duplicated charts.
 
 ## Reading the report, step by step
 
 1. **Open the Overview page.** The three KPI cards across the top give the headline position: project completion, awarded-versus-spent, and billed-versus-pending. The funnel shows how many projects survive each approval stage; the donuts show risk resolution and category mix.
-2. **Open the slicer panel.** Each page has a filter icon in the nav bar. Clicking it shows the slicer panel (District, Implementation Agency, Project Status, Tranche); clicking again hides it. This is a bookmark pair per page - one bookmark captures the panel visible, one captures it hidden.
+2. **Open the slicer panel.** Each page has a filter icon in the nav bar; clicking it shows the slicer panel, clicking again hides it (a bookmark pair per page - one bookmark captures the panel visible, one captures it hidden). The Overview panel carries District, Implementation Agency, Project Status, Bill Payment Status and Risk Status; the Analysis panel carries District, Implementation Agency and Project Status. Both panels have Apply all / Clear all slicers buttons.
 3. **Slice.** Pick a district or status; every visual on the page filters through the model's relationships.
 4. **Switch to the Analysis page** from the nav bar for diagnosis: budget allocation by sanction band, pendency buckets, the progress toggle and the district-level awarded-vs-expenditure chart.
 5. **Use the progress toggle** (Financial / Physical / Progress difference) to flip the progress chart between money spent, work done, and the gap between the two - the gap view is the early-warning view: a project far ahead on paper but behind on the ground stands out immediately.
@@ -101,7 +101,7 @@ Awarded Amount (Cr) =
 DIVIDE(SUM('Project details'[Awarded Amount]), 10000000, 0)
 ```
 
-- **Why `DIVIDE()` with a third argument:** a blank or zero denominator returns the explicit default (0) instead of an error or infinity, so a visual over a heavily filtered slice degrades to a sensible number rather than breaking.
+- **Why `DIVIDE()` rather than `/`:** DIVIDE returns its fallback when the denominator is zero or blank instead of erroring. In these conversion measures the denominator is the constant 10,000,000, so the explicit `0` fallback is a safety net. The protective case is real in the `Financial Progress` calculated column - `DIVIDE('Project details'[Total Project Expenditure], 'Project details'[Awarded Amount])` - where a project with no awarded amount returns blank instead of an error, so ratio visuals over filtered slices degrade gracefully.
 - **Why divide by 10,000,000:** the source amounts are in rupees; the brief presents money in crore, so the conversion lives inside the measures and every visual shows Cr consistently.
 
 ### The KPI cards are DAX-generated HTML

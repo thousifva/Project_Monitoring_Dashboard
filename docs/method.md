@@ -24,7 +24,7 @@ Four Excel tables maintained by the programme: Project Details (1,836 rows), Pac
 
 - A custom JSON theme (`Project_Monitoring_-_Professional`) was applied report-wide so every visual inherits the same palette.
 - Nav bar with page-navigation buttons on every page.
-- Hide/show slicer panel (District, Implementation Agency, Project Status, Tranche) driven by bookmarks, with a Clear-all-filters button - the brief's "slicers enabled on click of an icon" requirement.
+- Hide/show slicer panel driven by bookmarks - District, Implementation Agency and Project Status on both pages, plus Bill Payment Status and Risk Status on the Overview page - with Apply all / Clear all slicers buttons, the brief's "slicers enabled on click of an icon" requirement.
 
 ## 6. Design evolution
 

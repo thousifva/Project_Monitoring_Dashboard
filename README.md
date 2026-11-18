@@ -24,7 +24,7 @@ Measures live in a disconnected Measures Table, and a field parameter (Progress 
 
 ## Report
 
-Two pages behind a nav bar, with a bookmark-driven hide/show slicer panel on each (District, Implementation Agency, Project Status, Tranche filters):
+Two pages behind a nav bar, with a bookmark-driven hide/show slicer panel on each - District, Implementation Agency and Project Status on both pages, plus Bill Payment Status and Risk Status on the Overview page:
 
 - **Overview:** three KPI cards rendered with the HTML Content custom visual (styled DAX measures), risk-resolution and risk-category donuts, and the 7-stage cumulative pipeline funnel.
 - **Analysis:** budget-allocation and pendency column charts, the 3-way progress toggle (Financial / Physical / Progress difference), and a district-level awarded-vs-expenditure area chart.
