@@ -4,7 +4,11 @@ A data-analytics capstone project: a Power BI dashboard that monitors a portfoli
 
 Based on a real government project monitoring dashboard; the data in this repository has been manipulated and uses demo figures for portfolio purposes. The source workbook and the .pbix file are not included in this repository.
 
+**New here? Read the [step-by-step walkthrough](docs/walkthrough.md)** - how the dashboard was built, how to read it page by page, and the DAX explained with reasoning (funnel, banding, HTML KPI cards, defensive division).
+
 ## Data model
+
+![Data model diagram](docs/data-model-diagram.png)
 
 Five source tables (about 120 columns in total), related through 4 active many-to-one, single-direction relationships:
 
@@ -59,6 +63,8 @@ Full background in [docs/requirements.md](docs/requirements.md) (what the brief 
 | --- | --- |
 | `dax/calculated-columns.dax` | The 13 calculated columns from the final file: budget bands, progress ratios and bands, sort keys, pending status, milestone |
 | `dax/measures.dax` | The 30 measures from the final file: funnel, KPI, billing and risk logic, plus the styled HTML behind the KPI cards |
+| `docs/walkthrough.md` | Step-by-step guide: build process, reading the report, annotated DAX with reasoning |
+| `docs/data-model-diagram.png`, `docs/build-workflow.png` | Explanatory diagrams (model relationships; build workflow) |
 | `docs/requirements.md` | Faithful summary of the programme's functional requirements brief |
 | `docs/method.md` | How the dashboard was built: model, columns, measures, design and verification |
 | `docs/features.md` | Implemented features: pages, visuals, slicers, bookmarks, measures |
