@@ -27,6 +27,14 @@ Two pages behind a nav bar, with a bookmark-driven hide/show slicer panel on eac
 
 Custom theme applied report-wide.
 
+## Design and requirements
+
+![Requirements wireframe](docs/wireframe-requirements.png)
+
+*The original requirements wireframe from the programme brief - the design mockup the dashboard was planned from, not a screenshot of the finished report. Final report screenshots will be added here.*
+
+Full background in [docs/requirements.md](docs/requirements.md) (what the brief required) and [docs/method.md](docs/method.md) (how it was built, including the consolidation from a 4-page draft design into the final 2-page report).
+
 ## What the dashboard surfaces (training dataset)
 
 - 75.20% of awarded value unspent: 3,486.54 Cr awarded vs. 864.66 Cr expenditure (balance 2,621.87 Cr)
@@ -41,6 +49,9 @@ Custom theme applied report-wide.
 | --- | --- |
 | `dax/calculated-columns.dax` | The 13 calculated columns from the final file: budget bands, progress ratios and bands, sort keys, pending status, milestone |
 | `dax/measures.dax` | The 30 measures from the final file: funnel, KPI, billing and risk logic, plus the styled HTML behind the KPI cards |
+| `docs/requirements.md` | Faithful summary of the programme's functional requirements brief |
+| `docs/method.md` | How the dashboard was built: model, columns, measures, design and verification |
+| `docs/wireframe-requirements.png` | The original requirements wireframe (design mockup, not the finished dashboard) |
 | `.gitignore` | Keeps the workbook and .pbix out of commits |
 
 ## Techniques worth noting
